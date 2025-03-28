@@ -7,7 +7,9 @@ import SearchResults from "../SearchResults/SearchResults";
 import Spotify from "../../util/Spotify";
 
 const App = () => {
-  
+  return(
+    
+  )
 };
 
 export default App;
