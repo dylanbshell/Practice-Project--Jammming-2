@@ -5,8 +5,8 @@ import "./Playlist.css";
 import TrackList from "../TrackList/TrackList";
 
 const Playlist = (props) => {
-  return(
-    
+  return (
+
   )
 };
 
