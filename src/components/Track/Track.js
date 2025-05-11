@@ -6,12 +6,12 @@ const Track = (props) => {
     // Memoized callback for adding a track
   const handleAddTrack = useCallback(() => {
     props.onAdd(props.track);
-  }, [props.onRemove, props.track]);
+  }, [props.onAdd, props.track]);
 
   // Memoized callback for removing a track
   const handleRemoveTrack = useCallback(() => {
     props.onRemove(props.track);
-  }, [props.onAdd, props.track]);
+  }, [props.onRemove, props.track]);
   
   // Function to render the correct button
   const renderAction = () => {
