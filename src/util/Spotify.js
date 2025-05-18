@@ -1,5 +1,13 @@
 // Spotify.js - Utility for Spotify API Authentication and Requests
 
+console.log('Environment variables:', {
+  clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
+  redirectUri: process.env.REACT_APP_SPOTIFY_REDIRECT_URI,
+  authEndpoint: process.env.REACT_APP_SPOTIFY_AUTH_ENDPOINT,
+  scope: process.env.REACT_APP_SPOTIFY_SCOPE,
+  responseType: process.env.REACT_APP_SPOTIFY_RESPONSE_TYPE
+});
+
 // Get credentials and configuration from environment variables
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const redirectUri = process.env.REACT_APP_SPOTIFY_REDIRECT_URI;
