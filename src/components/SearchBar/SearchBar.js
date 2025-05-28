@@ -20,6 +20,7 @@ const SearchBar = (props) => {
         placeholder="Enter A Song, Album, or Artist" 
         onChange={handleTermChange}
         value={term}
+        name="SearchBar"
       />
       <button className="SearchButton" onClick={handleSearch}>
         SEARCH

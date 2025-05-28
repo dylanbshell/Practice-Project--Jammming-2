@@ -173,7 +173,7 @@ const search = async (term) => {
   try {
     const token = await getAccessToken();
     
-    const searchUrl = `https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(term)}&limit=20`;
+    const searchUrl = `https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(term)}&market=US&limit=20`;
     
     const response = await fetch(searchUrl, {
       headers: {
@@ -195,7 +195,8 @@ const search = async (term) => {
     }
 
     const data = await response.json();
-    
+    console.log('Raw Spotify response:', data.tracks.items[0]); // Log first track
+
     if (!data.tracks || !data.tracks.items) {
       return [];
     }

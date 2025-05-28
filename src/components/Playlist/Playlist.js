@@ -17,6 +17,7 @@ const Playlist = (props) => {
         value={props.playlistName}
         onChange={handleNameChange}
         placeholder="Enter Playlist Name"
+        name="Playlist"
       />
       <TrackList 
         tracks={props.playlistTracks} 

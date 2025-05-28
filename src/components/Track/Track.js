@@ -3,6 +3,13 @@ import React, { useCallback } from "react";
 import "./Track.css";
 
 const Track = (props) => {
+  
+  console.log('Track preview data:', {
+    name: props.track.name,
+    hasPreviewUrl: !!props.track.preview_url,
+    previewUrl: props.track.preview_url
+  });
+
     // Memoized callback for adding a track
   const handleAddTrack = useCallback(() => {
     props.onAdd(props.track);
@@ -33,10 +40,6 @@ const Track = (props) => {
   );
 };
 
-console.log('Track preview data:', {
-  name: props.track.name,
-  hasPreviewUrl: !!props.track.preview_url,
-  previewUrl: props.track.preview_url
-});
+
 
 export default Track;
