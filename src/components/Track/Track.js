@@ -33,4 +33,10 @@ const Track = (props) => {
   );
 };
 
+console.log('Track preview data:', {
+  name: props.track.name,
+  hasPreviewUrl: !!props.track.preview_url,
+  previewUrl: props.track.preview_url
+});
+
 export default Track;
