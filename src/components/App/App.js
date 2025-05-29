@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import "./App.css";
 
 import Playlist from "../Playlist/Playlist";
@@ -7,9 +7,51 @@ import SearchResults from "../SearchResults/SearchResults";
 import Spotify from "../../util/Spotify";
 
 const App = () => {
-  const [searchResults, setSearchResults] = useState([]);
-  const [playlistName, setPlaylistName] = useState('New Playlist');
-  const [playlistTracks, setPlaylistTracks] = useState([]);
+
+  //Manage & save state of search results
+  const [searchResults, setSearchResults] = useState(() => {
+    try {
+      const savedSearchResults = localStorage.getItem('searchResults');
+      return savedSearchResults ? JSON.parse(savedSearchResults) : [];
+    } catch (error) {
+      console.error('Error loading saved search results:', error);
+      return [];
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem('searchResults', JSON.stringify(searchResults));
+  }, [searchResults]);
+  
+  
+  //Manage & save state of playlistName
+  const [playlistName, setPlaylistName] = useState(() => {
+    try {
+      const savedPlaylistName = localStorage.getItem('playlistName');
+      return savedPlaylistName ? JSON.parse(savedPlaylistName) : 'New Playlist';
+    } catch (error) {
+      console.error('Error loading saved playlist name:', error);
+      return 'New Playlist';
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem('playlistName', JSON.stringify(playlistName));
+  }, [playlistName]);
+  
+  //Manage & save state of playlist tracks
+  const [playlistTracks, setPlaylistTracks] = useState(() => {
+    try {
+      const savedTracks = localStorage.getItem('playlistTracks');
+      return savedTracks ? JSON.parse(savedTracks) : [];
+    } catch (error) {
+      console.error('Error loading saved tracks:', error);
+      return [];
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem('playlistTracks', JSON.stringify(playlistTracks));
+  }, [playlistTracks]);
+
+
 
   const search = useCallback(async (term) => {
     try {
@@ -19,6 +61,13 @@ const App = () => {
       console.error('Search error:', error);
     }
   }, []);
+
+  // Filter search results to exclude tracks already in playlist
+  const filteredSearchResults = useMemo(() => {
+    return searchResults.filter(searchTrack => 
+      !playlistTracks.some(playlistTrack => playlistTrack.id === searchTrack.id)
+    );
+  }, [searchResults, playlistTracks]);
   
   const addTrack = useCallback((track) => {
     // Prevent duplicate tracks by checking IDs
@@ -30,6 +79,7 @@ const App = () => {
   }, [playlistTracks]);
 
   const removeTrack = useCallback((track) => {
+    //setSearchResults(prevResults => [...prevResults, track]);
     setPlaylistTracks(prevTracks => 
       prevTracks.filter(currentTrack => currentTrack.id !== track.id)
     );
@@ -59,8 +109,6 @@ const App = () => {
     }
   }, [playlistName, playlistTracks]);
 
-
-
   return (
     <div className="App">
     <header>
@@ -70,7 +118,7 @@ const App = () => {
       <SearchBar onSearch={search} />
       <div className="App-playlist">
         <SearchResults 
-          searchResults={searchResults} 
+          searchResults={filteredSearchResults} 
           onAdd={addTrack} 
         />
         <Playlist 

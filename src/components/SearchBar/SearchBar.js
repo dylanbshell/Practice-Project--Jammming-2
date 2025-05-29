@@ -1,20 +1,35 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 import "./SearchBar.css";
 
 const SearchBar = (props) => {
-  const [term, setTerm] = useState('');
+
+  //Manage & save state of search term
+  const [term, setTerm] = useState(() => {
+      try {
+        const savedTerm = localStorage.getItem('term');
+        return savedTerm ? JSON.parse(savedTerm) : '';
+      } catch (error) {
+        console.error('Error loading saved term:', error);
+        return '';
+      }
+    });
+    useEffect(() => {
+      localStorage.setItem('term', JSON.stringify(term));
+    }, [term]);
+
 
   const handleTermChange = useCallback((event) => {
     setTerm(event.target.value);
   }, []);
 
-  const handleSearch = useCallback(() => {
+  const handleSubmit = useCallback((event) => {
+    event.preventDefault();
     props.onSearch(term);
   }, [props.onSearch, term]);
 
   return (
-    <div className="SearchBar">
+    <form className="SearchBar" onSubmit={handleSubmit}>
       <input 
         type="text" 
         placeholder="Enter A Song, Album, or Artist" 
@@ -22,10 +37,10 @@ const SearchBar = (props) => {
         value={term}
         name="SearchBar"
       />
-      <button className="SearchButton" onClick={handleSearch}>
+      <button type="submit" className="SearchButton">
         SEARCH
       </button>
-    </div>
+    </form>
   );
 };
 
