@@ -1,8 +1,8 @@
 // Spotify.js - PKCE Flow Implementation with Debug Logging
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const redirectUri = process.env.NODE_ENV === 'production' 
-  ? process.env.REACT_APP_REDIRECT_URI 
-  : 'http://127.0.0.1:3000/';
+const redirectUri = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://127.0.0.1:3000/'
+  : process.env.REACT_APP_REDIRECT_URI || window.location.origin + '/';
 const scopes = 'playlist-modify-public playlist-modify-private';
 
 let accessToken;
